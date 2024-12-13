@@ -39,6 +39,8 @@ class CLIPFeatureExtractor:
         """
         if isinstance(images, Image.Image):
             images = [images]
+        elif isinstance(images, dict):
+            images = images['image']
 
         # Preprocess images
         processed_images = torch.stack([

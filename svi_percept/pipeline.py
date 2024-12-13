@@ -39,13 +39,14 @@ class SVIPerceptPipeline(Pipeline):
         """Extract CLIP features and apply custom processing"""
         # Get CLIP features
         features = self.feature_extractor.extract_features(model_inputs)
-
-        # TODO: Add your custom processing here
-        # This is where you can add your own processing logic
-        # The features['image_features'] tensor will be of shape (N, feature_dim)
+        # Run KNN model
         return self.model(features["image_features"])
 
     def postprocess(self, model_outputs: Dict[str, Any]) -> Dict[str, Any]:
-        """Format the outputs as needed"""
-        # TODO: Add any post-processing of your custom outputs
-        return model_outputs
+        """Format the outputs into a more readable dict"""
+        raw = model_outputs['results']
+        results = {}
+        for cat_i, cat in enumerate(self.model.categories):
+            results[cat] = raw[0,cat_i]
+
+        return { 'results': results }
