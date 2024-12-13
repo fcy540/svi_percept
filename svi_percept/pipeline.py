@@ -22,18 +22,19 @@ class SVIPerceptPipeline(Pipeline):
     def _sanitize_parameters(self, **kwargs):
         return {}, {}, {}
 
-    def preprocess(self, inputs: Union[str, Image.Image, List[Union[str, Image.Image]]]) -> List[Image.Image]:
+    def preprocess(self, inputs: Union[str, Dict[str, Any], Image.Image]) -> Dict[str, Any]:
         """Convert inputs to PIL Images"""
-        if isinstance(inputs, str):
-            inputs = Image.open(inputs).convert('RGB')
-        if isinstance(inputs, Image.Image):
-            inputs = [inputs]
-        elif isinstance(inputs, list):
-            inputs = [
-                Image.open(x).convert('RGB') if isinstance(x, str) else x
-                for x in inputs
-            ]
-        return inputs
+        def load_image_if_needed(x):
+            if isinstance(x, Image.Image):
+                return { 'image': x }
+            if isinstance(x, dict):
+                return { k: load_image_if_needed(v) for k, v in x.items() }
+            if isinstance(x, str):
+                return { 'image': Image.open(x).convert('RGB') }
+            else:
+                return x
+
+        return load_image_if_needed(inputs)
 
     def _forward(self, model_inputs: List[Image.Image]) -> Dict[str, Any]:
         """Extract CLIP features and apply custom processing"""
