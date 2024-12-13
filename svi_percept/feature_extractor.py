@@ -26,7 +26,7 @@ class CLIPFeatureExtractor:
     @torch.no_grad()
     def extract_features(
         self, 
-        images: Union[Image.Image, List[Image.Image]]
+        images: Union[Image.Image, List[Image.Image], dict, List[dict]]
     ) -> Dict[str, torch.Tensor]:
         """
         Extract CLIP image features from one or more images.
@@ -37,10 +37,12 @@ class CLIPFeatureExtractor:
         Returns:
             dict: Contains 'image_features' tensor of shape (N, feature_dim)
         """
-        if isinstance(images, Image.Image):
-            images = [images]
-        elif isinstance(images, dict):
+        if isinstance(images, dict):
             images = images['image']
+        if not isinstance(images, list):
+            images = [images]
+        else:
+            images = [x['image'] if isinstance(x, dict) else x for x in images]
 
         # Preprocess images
         processed_images = torch.stack([
