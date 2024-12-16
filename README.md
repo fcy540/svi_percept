@@ -5,7 +5,7 @@ A Python package for image perception using CLIP features and custom scoring mat
 ## Installation
 
 ```bash
-pip install svi_percept
+pip install .
 ```
 
 ## Quick Start
