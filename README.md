@@ -1,6 +1,6 @@
 # SVI Percept
 
-A Python package for image perception using CLIP features and custom scoring matrices.
+A Python package for modelling human perception of street view images using CLIP features and the K-nearest-neighbour algorithm.
 
 ## Installation
 
