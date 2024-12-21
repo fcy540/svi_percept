@@ -181,6 +181,7 @@ def main():
         if not args.overwrite and not single_output_numpy_file and output_numpy_files[0].exists():
             # Do not overwrite the existing output file, instead read it.
             results = np.load(output_numpy_files[0])
+            output_numpy_files = output_numpy_files[1:]
         else:
             # Load the input CLIP features from the current input file
             clipfeatures = np.load(input_numpy_file)
