@@ -143,6 +143,9 @@ def main():
         metadata_i = 0
     else:
         metadata = None
+    if metadata is not None:
+        metadata_len = len(metadata)
+        print(f'Read metadata file with {metadata_len} rows.')
 
     if args.tiles:
         # Open our compressed Mapillary tile information database
@@ -151,7 +154,7 @@ def main():
     else:
         tiles = None
 
-    if args.output_geojson and tiles:
+    if args.output_geojson and tiles and metadata is not None:
         if not args.overwrite and Path(args.output_geojson).exists():
             output_geojson = None
         else:
