@@ -71,6 +71,7 @@ import pandas as pd
 from math import log10
 import pickle
 import lzma
+from tqdm import tqdm
 
 parser = argparse.ArgumentParser(prog='batch_rate', description='Run SVIPerceptModel on a batch of encoded features')
 parser.add_argument('--embeddings', type=str, help='Embeddings dir (output from clip-retrieval) for input (img_emb/ subdir) and output (img_rate/ subdir)', default=None)
@@ -173,7 +174,7 @@ def main():
     if args.limit:
         input_numpy_files = input_numpy_files[:args.limit]
 
-    for input_numpy_file in input_numpy_files:
+    for input_numpy_file in tqdm(input_numpy_files):
         if not args.overwrite and not single_output_numpy_file and output_numpy_files[0].exists():
             # Do not overwrite the existing output file, instead read it.
             results = np.load(output_numpy_files[0])
@@ -194,7 +195,7 @@ def main():
 
         if output_geojson:
             # Analyze the current results for inclusion in the output GeoJSON file
-            for i in range(results.shape[0]):
+            for i in tqdm(range(results.shape[0])):
                 ratings = results[i]
                 # The metadata has but one piece of information: the names of
                 # the image files that correspond to each row in the input
