@@ -50,7 +50,7 @@
 # Example:
 #
 # Build the pickle file of Mapillary tiles information, also examining the image sequences within ams-seqs/:
-#   make_tiles_db.py --seqs ams-seqs/ ams-tiles/ ams-tiles.pkl
+#   make_tiles_db.py --seqs ams-seqs/ -o ams-tiles.pkl ams-tiles/
 #
 # Run the CLIP encoder on numerous images within the sequences directory, output to ams-embeddings/
 # (we use open_clip:ViT-H-14-378-quickgelu for the svi_percept model on Huggingface by default)
