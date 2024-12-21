@@ -102,9 +102,6 @@ def main():
         print('One of --embeddings or --input-numpy-file must be specified')
         return 1
 
-    if args.limit:
-        input_numpy_files = input_numpy_files[:args.limit]
-
     if args.output_numpy_file is None:
         if args.embeddings is None:
             print('One of --embeddings or --output-numpy-file must be specified')
@@ -170,6 +167,11 @@ def main():
     if single_output_numpy_file:
         # Accumulator var for all the results
         accum_results = []
+
+    # Apply limit after generating output file names; all else should run as if
+    # limit was not in place, but then we cut it off.
+    if args.limit:
+        input_numpy_files = input_numpy_files[:args.limit]
 
     for input_numpy_file in input_numpy_files:
         if not args.overwrite and not single_output_numpy_file and output_numpy_files[0].exists():
