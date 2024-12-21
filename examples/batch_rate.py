@@ -251,8 +251,8 @@ def main():
             # Aggregate rows with the same image ID, as they were cropped from
             # the same panoramic image originally. Average the ratings
             # together, and discard the angle as it no longer makes sense.
-            aggconditions =
-                {'geometry': 'first', 'seqid': 'first', 'angle': lambda x: None if len(x) > 1 else x} |
+            aggconditions = \
+                {'geometry': 'first', 'seqid': 'first', 'angle': lambda x: None if len(x) > 1 else x} | \
                 { cat: 'mean' for cat in model.categories }
             gdf = gdf.groupby('imgid').agg(aggconditions).reset_index()
 
